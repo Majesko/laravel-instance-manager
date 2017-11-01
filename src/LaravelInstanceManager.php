@@ -15,7 +15,7 @@ class LaravelInstanceManager implements AdapterInterface {
 		$this->adapters = [
 			'aws' => AwsAdapter::class
 		];
-		$this->config = Config::get('instance-manager::instance-manager');
+		$this->config = app('config')->get('instance-manager::config');
 		$this->defaultProvider = $this->config[$this->config['default']];
 	}
 
@@ -32,19 +32,19 @@ class LaravelInstanceManager implements AdapterInterface {
 	}
 
 	public function createInstances($count) {
-		$adapter = new $this->adapters[$this->defaultProvider]($this->config[$this->defaultProvider]);
+		$adapter = new $this->adapters[$this->config['default']]($this->config[$this->defaultProvider]);
 
 		return (new InstanceManager($adapter))->createInstances($count);
 	}
 
 	public function describeInstances($names) {
-		$adapter = new $this->adapters[$this->defaultProvider]($this->config[$this->defaultProvider]);
+		$adapter = new $this->adapters[$this->config['default']]($this->config[$this->defaultProvider]);
 
 		return (new InstanceManager($adapter))->describeInstances($names);
 	}
 
 	public function terminateInstances($names) {
-		$adapter = new $this->adapters[$this->defaultProvider]($this->config[$this->defaultProvider]);
+		$adapter = new $this->adapters[$this->config['default']]($this->config[$this->defaultProvider]);
 
 		return (new InstanceManager($adapter))->terminateInstances($names);
 	}
